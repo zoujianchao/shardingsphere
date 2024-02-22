@@ -17,9 +17,8 @@
 
 package org.apache.shardingsphere.example.parser.mysql.format;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.shardingsphere.sql.parser.api.SQLParserEngine;
-import org.apache.shardingsphere.sql.parser.api.SQLVisitorEngine;
+import org.apache.shardingsphere.sql.parser.api.CacheOption;
+import org.apache.shardingsphere.sql.parser.api.SQLFormatEngine;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,20 +45,18 @@ public final class MySQLParserFormatExample {
     private static final List<String> MYSQL_FORMAT_SQL_LIST;
     
     static {
-        MYSQL_FORMAT_SQL_LIST = Arrays.asList(DML_SELECT_SQL, DML_INSERT_SQL, DML_DELETE_SQL, DML_UPDATE_SQL, DDL_CREATE_SQL,
-                DDL_DROP_SQL, DDL_ALTER_SQL, DDL_SHOW_SQL);
+        MYSQL_FORMAT_SQL_LIST = Arrays.asList(DML_SELECT_SQL, DML_INSERT_SQL, DML_DELETE_SQL, DML_UPDATE_SQL, DDL_CREATE_SQL, DDL_DROP_SQL, DDL_ALTER_SQL, DDL_SHOW_SQL);
     }
     
-    
-    public static void main(String[] args) {
-        MYSQL_FORMAT_SQL_LIST.stream().forEach(sql -> {
+    // CHECKSTYLE:OFF
+    public static void main(final String[] args) {
+        // CHECKSTYLE:ON
+        MYSQL_FORMAT_SQL_LIST.forEach(each -> {
+            CacheOption cacheOption = new CacheOption(128, 1024L);
+            SQLFormatEngine sqlFormatEngine = new SQLFormatEngine("MySQL", cacheOption);
             Properties props = new Properties();
-            props.setProperty("parameterized", "false");
-            SQLParserEngine parserEngine = new SQLParserEngine("MySQL");
-            ParseTree tree = parserEngine.parse(sql, false);
-            SQLVisitorEngine visitorEngine = new SQLVisitorEngine("MySQL", "FORMAT", props);
-            String result = visitorEngine.visit(tree);
-            System.out.println(result);
+            props.setProperty("parameterized", Boolean.FALSE.toString());
+            System.out.println(sqlFormatEngine.format(each, false, props));
         });
     }
 }

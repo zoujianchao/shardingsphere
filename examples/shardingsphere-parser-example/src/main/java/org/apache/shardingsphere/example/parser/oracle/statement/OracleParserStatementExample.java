@@ -17,18 +17,18 @@
 
 package org.apache.shardingsphere.example.parser.oracle.statement;
 
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.shardingsphere.sql.parser.api.CacheOption;
 import org.apache.shardingsphere.sql.parser.api.SQLParserEngine;
-import org.apache.shardingsphere.sql.parser.api.SQLVisitorEngine;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.oracle.OracleStatement;
+import org.apache.shardingsphere.sql.parser.api.SQLStatementVisitorEngine;
+import org.apache.shardingsphere.sql.parser.core.ParseASTNode;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 public final class OracleParserStatementExample {
     
-    private static final String DML_SELECT_SQL = "SELECT t.id, t.name, t.age FROM table1 AS t ORDER BY t.id DESC;";
+    private static final String DML_SELECT_SQL = "SELECT t.id, t.name, t.age FROM table1 t ORDER BY t.id DESC;";
     
     private static final String DML_INSERT_SQL = "INSERT INTO table1 (name, age) VALUES ('z', 18);";
     
@@ -45,16 +45,18 @@ public final class OracleParserStatementExample {
     private static final List<String> ORACLE_PARSER_STATEMENT_LIST;
     
     static {
-        ORACLE_PARSER_STATEMENT_LIST = Arrays.asList(DML_SELECT_SQL, DML_INSERT_SQL, DML_UPDATE_SQL, DML_DELETE_SQL,
-                DDL_CREATE_SQL, DDL_DROP_SQL, DDL_ALTER_SQL);
+        ORACLE_PARSER_STATEMENT_LIST = Arrays.asList(DML_SELECT_SQL, DML_INSERT_SQL, DML_UPDATE_SQL, DML_DELETE_SQL, DDL_CREATE_SQL, DDL_DROP_SQL, DDL_ALTER_SQL);
     }
     
-    public static void main(String[] args) {
+    // CHECKSTYLE:OFF
+    public static void main(final String[] args) {
+        // CHECKSTYLE:ON
         ORACLE_PARSER_STATEMENT_LIST.forEach(sql -> {
-            SQLParserEngine parserEngine = new SQLParserEngine("Oracle");
-            ParseTree tree = parserEngine.parse(sql, false);
-            SQLVisitorEngine visitorEngine = new SQLVisitorEngine("Oracle", "STATEMENT", new Properties());
-            OracleStatement sqlStatement = visitorEngine.visit(tree);
+            CacheOption cacheOption = new CacheOption(128, 1024L);
+            SQLParserEngine parserEngine = new SQLParserEngine("Oracle", cacheOption);
+            ParseASTNode parseASTNode = parserEngine.parse(sql, false);
+            SQLStatementVisitorEngine visitorEngine = new SQLStatementVisitorEngine("Oracle");
+            SQLStatement sqlStatement = visitorEngine.visit(parseASTNode);
             System.out.println(sqlStatement.toString());
         });
     }

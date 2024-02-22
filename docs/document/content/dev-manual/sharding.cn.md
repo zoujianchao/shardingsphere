@@ -1,60 +1,100 @@
 +++
-pre = "<b>5.4. </b>"
+pre = "<b>5.3. </b>"
 title = "数据分片"
-weight = 4
+weight = 3
 chapter = true
 +++
 
 ## ShardingAlgorithm
 
-| *SPI 名称*                           | *详细说明*                |
-| ----------------------------------- | ------------------------ |
-| ShardingAlgorithm                   | 分片算法                   |
+### 全限定类名
 
-| *已知实现类*                          | *详细说明*                |
-| ----------------------------------- | ------------------------ |
-| BoundaryBasedRangeShardingAlgorithm | 基于分片边界的范围分片算法    |
-| VolumeBasedRangeShardingAlgorithm   | 基于分片容量的范围分片算法    |
-| ComplexInlineShardingAlgorithm      | 基于行表达式的复合分片算法    |
-| AutoIntervalShardingAlgorithm       | 基于可变时间范围的分片算法    |
-| ClassBasedShardingAlgorithm         | 基于自定义类的分片算法       |
-| HintInlineShardingAlgorithm         | 基于行表达式的Hint分片算法    |
-| IntervalShardingAlgorithm           | 基于固定时间范围的分片算法    |
-| HashModShardingAlgorithm            | 基于哈希取模的分片算法       |
-| InlineShardingAlgorithm             | 基于行表达式的分片算法       |
-| ModShardingAlgorithm                | 基于取模的分片算法          |
+[`org.apache.shardingsphere.sharding.spi.ShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/api/src/main/java/org/apache/shardingsphere/sharding/spi/ShardingAlgorithm.java)
+
+### 定义
+
+分片算法
+
+### 已知实现
+
+| *配置标识*                   | *自动分片算法* | *详细说明*                    | *全限定类名*                                                                                                                                                                                                                                                                                                                               |
+|--------------------------|----------|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MOD                      | Y        | 基于取模的分片算法                 | [`org.apache.shardingsphere.sharding.algorithm.sharding.mod.ModShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/mod/ModShardingAlgorithm.java)                                                                     |
+| HASH_MOD                 | Y        | 基于哈希取模的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.mod.HashModShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/mod/HashModShardingAlgorithm.java)                                                             |
+| BOUNDARY_RANGE           | Y        | 基于分片边界的范围分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.range.BoundaryBasedRangeShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/range/BoundaryBasedRangeShardingAlgorithm.java)                                   |
+| VOLUME_RANGE             | Y        | 基于分片容量的范围分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.range.VolumeBasedRangeShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/range/VolumeBasedRangeShardingAlgorithm.java)                                       |
+| AUTO_INTERVAL            | Y        | 基于可变时间范围的分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.AutoIntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/AutoIntervalShardingAlgorithm.java)                                         |
+| INTERVAL                 | N        | 基于固定时间范围的分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.IntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/IntervalShardingAlgorithm.java)                                                 |
+| CLASS_BASED              | N        | 基于自定义类的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/classbased/ClassBasedShardingAlgorithm.java)                                         |
+| INLINE                   | N        | 基于行表达式的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.InlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/InlineShardingAlgorithm.java)                                                         |
+| COMPLEX_INLINE           | N        | 基于行表达式的复合分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.complex.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
+| HINT_INLINE              | N        | 基于行表达式的 Hint 分片算法         | [`org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/hint/HintInlineShardingAlgorithm.java)                                                     |
 
 ## KeyGenerateAlgorithm
 
-| *SPI 名称*                    | *详细说明*                    |
-| ----------------------------- | ---------------------------- |
-| KeyGenerateAlgorithm          | 分布式主键生成算法             |
+### 全限定类名
 
-| *已知实现类*                   | *详细说明*                    |
-| ----------------------------- | ---------------------------- |
-| SnowflakeKeyGenerateAlgorithm | 基于雪花算法的分布式主键生成算法 |
-| UUIDKeyGenerateAlgorithm      | 基于UUID的分布式主键生成算法    |
+[`org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/key-generator/core/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/core/KeyGenerateAlgorithm.java)
+
+### 定义
+
+分布式主键生成算法
+
+### 已知实现
+
+| *配置标识*       | *详细说明*                      | *全限定类名*                                                                                                                                                                                                                                                                                               |
+|-----------------|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SNOWFLAKE       | 基于雪花算法的分布式主键生成算法    | [`org.apache.shardingsphere.keygen.snowflake.algorithm.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java)    |
+| UUID            | 基于 UUID 的分布式主键生成算法     | [`org.apache.shardingsphere.keygen.uuid.algorithm.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                             |
+
+## ShardingAuditAlgorithm
+
+### 全限定类名
+
+[`org.apache.shardingsphere.sharding.spi.ShardingAuditAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/api/src/main/java/org/apache/shardingsphere/sharding/spi/ShardingAuditAlgorithm.java)
+
+### 定义
+
+分片审计算法
+
+### 已知实现
+
+| *配置标识*                  | *详细说明*          | *全限定类名*                                                                                                                                                                                                                                                                                           |
+|-------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DML_SHARDING_CONDITIONS | 禁止不带分片键的DML审计算法 | [`org.apache.shardingsphere.sharding.algorithm.audit.DMLShardingConditionsShardingAuditAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/audit/DMLShardingConditionsShardingAuditAlgorithm.java) |
 
 ## DatetimeService
 
-| *SPI 名称*                       | *详细说明*                     |
-| ------------------------------- | ----------------------------- |
-| DatetimeService                 | 获取当前时间进行路由              |
+### 全限定类名
 
-| *已知实现类*                      | *详细说明*                      |
-| ------------------------------- | ----------------------------- |
-| DatabaseDatetimeServiceDelegate | 从数据库中获取当前时间进行路由      |
-| SystemDatetimeService           | 从应用系统时间中获取当前时间进行路由 |
+[`org.apache.shardingsphere.timeservice.spi.TimestampService`](https://github.com/apache/shardingsphere/blob/master/kernel/time-service/api/src/main/java/org/apache/shardingsphere/timeservice/spi/TimestampService.java)
 
-## DatabaseSQLEntry
+### 定义
 
-| *SPI 名称*                 | *详细说明*                          |
-| -------------------------- | ---------------------------------- |
-| DatabaseSQLEntry           | 获取当前时间的数据库方言              |
+获取当前时间进行路由
 
-| *已知实现类*                | *详细说明*                          |
-| -------------------------- | ---------------------------------- |
-| MySQLDatabaseSQLEntry      | 从 MySQL 获取当前时间的数据库方言     |
-| PostgreSQLDatabaseSQLEntry | 从 PostgreSQL 获取当前时间的数据库方言|
-| OracleDatabaseSQLEntry     | 从 Oracle 获取当前时间的数据库方言    |
-| SQLServerDatabaseSQLEntry  | 从 SQLServer 获取当前时间的数据库方言 |
+### 已知实现
+
+| *配置标识*                   | *详细说明*             | *全限定类名*                                                                                                                                                                                                                                                                  |
+|--------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DatabaseTimestampService | 从数据库中获取当前时间进行路由    | [`org.apache.shardingsphere.timeservice.type.database.DatabaseTimestampService`](https://github.com/apache/shardingsphere/blob/master/kernel/time-service/type/database/src/main/java/org/apache/shardingsphere/timeservice/type/database/DatabaseTimestampService.java) |
+| SystemTimestampService   | 从应用系统时间中获取当前时间进行路由 | [`org.apache.shardingsphere.timeservice.type.system.SystemTimestampService`](https://github.com/apache/shardingsphere/blob/master/kernel/time-service/type/system/src/main/java/org/apache/shardingsphere/timeservice/type/system/SystemTimestampService.java)           |
+
+## InlineExpressionParser
+
+### 全限定类名
+
+`org.apache.shardingsphere.infra.expr.core.InlineExpressionParser`
+
+### 定义
+
+解析行表达式
+
+### 已知实现
+
+| *配置标识*   | *详细说明*                                             | *全限定类名*                                                                        |
+|----------|----------------------------------------------------|--------------------------------------------------------------------------------|
+| GROOVY   | 使用 Groovy 语法的行表达式                                  | `org.apache.shardingsphere.infra.expr.groovy.GroovyInlineExpressionParser`     |
+| LITERAL  | 使用标准列表的行表达式                                        | `org.apache.shardingsphere.infra.expr.literal.LiteralInlineExpressionParser`   |
+| INTERVAL | 基于固定时间范围的 Key-Value 语法的行表达式                        | `org.apache.shardingsphere.infra.expr.interval.IntervalInlineExpressionParser` |
+| ESPRESSO | 基于 GraalVM Truffle 的 Espresso 实现的使用 Groovy 语法的行表达式 | `org.apache.shardingsphere.infra.expr.espresso.EspressoInlineExpressionParser` |

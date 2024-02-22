@@ -1,16 +1,22 @@
 +++
-pre = "<b>5.7. </b>"
+pre = "<b>5.5. </b>"
 title = "SQL Audit"
-weight = 7
+weight = 5
 chapter = true
 +++
 
 ## SQLAuditor
 
-| *SPI Name*             | *Description* |
-| ---------------------- | ------------- |
-| SQLAuditor             | SQL auditor   |
+### Fully-qualified class name
 
-| *Implementation Class* | *Description* |
-| ---------------------- | ------------- |
-| None                   |               |
+[`org.apache.shardingsphere.infra.executor.audit.SQLAuditor`](https://github.com/apache/shardingsphere/blob/master/infra/executor/src/main/java/org/apache/shardingsphere/infra/executor/audit/SQLAuditor.java)
+
+### Definition
+
+SQL auditor class definition
+
+### Implementation classes
+
+| *Configuration Type* | *Description*    | *Fully-qualified class name*                                                                                                                                                                                                    |
+|----------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Sharding             | Sharding auditor | [`org.apache.shardingsphere.sharding.auditor.ShardingSQLAuditor`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/auditor/ShardingSQLAuditor.java) |

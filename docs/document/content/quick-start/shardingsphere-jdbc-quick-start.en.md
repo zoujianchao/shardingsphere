@@ -4,29 +4,66 @@ title = "ShardingSphere-JDBC"
 weight = 1
 +++
 
-## 1. Import Maven Dependency
+## Scenarios
+
+There are two ways you can configure Apache ShardingSphere: `Java` and `YAML`. 
+Developers can choose the preferred method according to their requirements. 
+
+## Limitations
+
+Currently only Java language is supported.
+
+## Requirements
+
+The development environment requires Java JRE 8 or later.
+
+## Procedure
+
+1. Rules configuration.
+
+Please refer to [User Manual](/en/user-manual/shardingsphere-jdbc/) for more details.
+
+2. Import Maven dependency
 
 ```xml
 <dependency>
     <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-jdbc-core</artifactId>
+    <artifactId>shardingsphere-jdbc</artifactId>
     <version>${latest.release.version}</version>
 </dependency>
 ```
 
 > Notice: Please change `${latest.release.version}` to the actual version.
 
-## 2. Rules Configuration
+3. Create YAML configuration file
 
-ShardingSphere-JDBC can be configured by four methods, `Java`, `YAML`, `Spring namespace` and `Spring boot starter`. 
-Developers can choose the suitable method according to different situations. 
-Please refer to [Configuration Manual](/en/user-manual/shardingsphere-jdbc/configuration/) for more details.
+```yaml
+# JDBC database name. In cluster mode, use this parameter to connect ShardingSphere-JDBC and ShardingSphere-Proxy.
+# Default：logic_db
+databaseName (?):
 
-## 3. Create Data Source
+mode:
 
-Use `ShardingSphereDataSourceFactory` and rule configurations to create `ShardingSphereDataSource`, which implements DataSource interface of JDBC. 
-It can be used for native JDBC or JPA, MyBatis and other ORM frameworks.
+dataSources:
 
-```java
-DataSource dataSource = ShardingSphereDataSourceFactory.createDataSource(dataSourceMap, configurations, properties);
+rules:
+- !FOO_XXX
+    ...
+- !BAR_XXX
+    ...
+
+props:
+  key_1: value_1
+  key_2: value_2
 ```
+
+4. Take `spring boot` as an example, edit `application.properties`.
+
+```properties
+# Configuring DataSource Drivers
+spring.datasource.driver-class-name=org.apache.shardingsphere.driver.ShardingSphereDriver
+# Specify a YAML configuration file
+spring.datasource.url=jdbc:shardingsphere:classpath:xxx.yaml
+```
+
+For details, see [Spring Boot](/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/spring-boot/).
